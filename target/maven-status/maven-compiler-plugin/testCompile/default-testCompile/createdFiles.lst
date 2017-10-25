@@ -1,0 +1,4 @@
+common/CommonTest.class
+com/lubo/com/need/wexi/dao/UserDaoTest.class
+com/lubo/com/need/wexi/service/LoginServiceTest.class
+com/lubo/com/need/wexi/service/ActServiceTest.class

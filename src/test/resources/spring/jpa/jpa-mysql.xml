@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx 
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd 
+	http://www.springframework.org/schema/jee 
+	http://www.springframework.org/schema/jee/spring-jee.xsd
+	http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<!-- 数据库配置 -->
+	<beans:bean id="dataSourceDefault" class="org.apache.tomcat.jdbc.pool.DataSource"
+		destroy-method="close">
+		<beans:property name="driverClassName" value="${default.jdbc.driverClass}" />
+		<beans:property name="url" value="${default.jdbc.url}" />
+		<beans:property name="username" value="${default.jdbc.user}" />
+		<beans:property name="password" value="${default.jdbc.password}" />
+	</beans:bean>
+
+	<!-- 实体类管理工厂配置 -->
+	<beans:bean id="entityManagerFactoryMysql"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<beans:property name="dataSource" ref="dataSourceDefault" />
+		<beans:property name="packagesToScan">
+			<beans:list>
+				<beans:value>com.lubo.com.need.common.domian.entity.mysql</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="persistenceProvider">
+			<beans:bean class="org.hibernate.jpa.HibernatePersistenceProvider" />
+		</beans:property>
+		<beans:property name="jpaPropertyMap">
+			<beans:map>
+				<beans:entry key="hibernate.hbm2ddl.auto" value="update" />
+				<beans:entry key="hibernate.dialect" value="${default.hibernate.dialect}" />
+				<beans:entry key="hibernate.show_sql" value="false" />
+				<beans:entry key="hibernate.format_sql" value="true" />
+				<beans:entry key="hibernate.order_updates" value="true" />
+				<beans:entry key="hibernate.temp.use_jdbc_metadata_defaults"
+					value="false" />
+				<beans:entry key="hibernate.max_fetch_depth" value="3" />
+				<beans:entry key="hibernate.cache.use_second_level_cache"
+					value="false" />
+				<beans:entry key="hibernate.cache.use_query_cache"
+					value="false" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 配置Spring Data JPA扫描目录 -->
+	<jpa:repositories base-package="com.lubo.com.need.*.dao"
+		base-class="com.lubo.com.need.common.dao.BaseRepositoryImpl"
+		entity-manager-factory-ref="entityManagerFactoryMysql"
+		transaction-manager-ref="transactionManager" repository-impl-postfix="Impl" />
+
+</beans:beans>
