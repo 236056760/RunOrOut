@@ -1,5 +1,7 @@
 package com.lubo.com.need.wexi.web;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +11,7 @@ import com.lubo.com.need.common.domian.entity.mysql.Track;
 import com.lubo.com.need.common.domian.entity.mysql.User;
 import com.lubo.com.need.common.domian.vo.RequestParameter;
 import com.lubo.com.need.common.domian.vo.Result;
+import com.lubo.com.need.common.tools.UUIDUtils;
 import com.lubo.com.need.wexi.service.ActivityService;
 import com.lubo.com.need.wexi.service.TrackService;
 
@@ -30,7 +33,10 @@ public class TrackController {
 		User mUser = new User();
 		mUser.setId(parameter.getUserId());
 		Track mTrack = new Track();
+		mTrack.setId(UUIDUtils.getUUID());
+		mTrack.setCreateTime(new Date());
 		mTrack.setUser(mUser);
+		mTrack.setTrack(parameter.getTrack());
 		return trackService.saveTrack(mTrack);
 	}
 
