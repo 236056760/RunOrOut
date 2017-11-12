@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -63,22 +64,27 @@ public class User implements Serializable {
 	private String head;
 
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "w_id")
+	@OneToOne(cascade = CascadeType.ALL,mappedBy="user")
 	private WeixinInfo weixinInfo;
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "userSet")
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "l_b_act_user", joinColumns = { @JoinColumn(name = "u_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "a_id") })
 	private Set<Act> actSet = Sets.newHashSet();
 	
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="user")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="u_id")
 	private Set<Order> orderSet=Sets.newHashSet();
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="user",fetch=FetchType.EAGER)
+	@OneToMany
+	@JoinColumn(name="u_id")
 	private Set<Track> trackSet=Sets.newHashSet();
+	
+	
 	
 	
 	

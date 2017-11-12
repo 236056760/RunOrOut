@@ -48,11 +48,25 @@ public class Track implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "u_id")
 	private User user;
+	
 
 	// 提交时间
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "t_create_time")
-	private Date createTime;
+	private long createTime;
 
+	//跑步时间
+	@Column(name="t_second")
+	private long second;
+	
+	//总计步数
+	@Column(name="t_setup")
+	private long setup;
+	
+	//跑了多少米
+	@Column(name="t_metre")
+	private long metre;
+	
+	//缩略图地址
+	@Column(name="t_thumbnail")
+	private String thumbnailUrl;
 }

@@ -1,6 +1,13 @@
 package com.lubo.com.need.wexi.service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.lubo.com.need.common.domian.entity.mysql.Track;
@@ -17,8 +24,7 @@ public class TrackServiceIml implements TrackService {
 
 	@Autowired
 	private TrackDao mTrackDao;
-	@Autowired
-	private UserDao userDao;
+	
 	
 	@Override
 	public Result saveTrack(Track track) {
@@ -39,8 +45,10 @@ public class TrackServiceIml implements TrackService {
 	@Override
 	public Result getTrackSetByUserId(String userId) {
 		// TODO Auto-generated method stub
-		User mUser=userDao.findById(userId);
-		return new Result(mUser.getTrackSet());
+		User u=new User();
+		u.setId(userId);
+		
+		return new Result(mTrackDao.findByJPQL("select new com.lubo.com.need.common.domian.vo.TrackVo(t.id,t.createTime,t.second,t.setup,t.metre,t.thumbnailUrl) from Track t where t.user=\'"+userId+"\'"));
 	}
 
 	@Override

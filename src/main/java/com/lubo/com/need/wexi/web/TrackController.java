@@ -34,7 +34,7 @@ public class TrackController {
 		mUser.setId(parameter.getUserId());
 		Track mTrack = new Track();
 		mTrack.setId(UUIDUtils.getUUID());
-		mTrack.setCreateTime(new Date());
+		mTrack.setCreateTime(System.currentTimeMillis());
 		mTrack.setUser(mUser);
 		mTrack.setTrack(parameter.getTrack());
 		return trackService.saveTrack(mTrack);
@@ -49,6 +49,17 @@ public class TrackController {
 	Result getTrackSetByUserId(RequestParameter parameter) {
 
 		return trackService.getTrackSetByUserId(parameter.getUserId());
+	}
+	
+	/**
+	 * 根据用户id获取用户的所以轨迹记录
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/getTrackDetailById")
+	Result getTrackDetailById(RequestParameter parameter) {
+
+		return trackService.getTrackDetailById(parameter.getTrackId());
 	}
 
 }
